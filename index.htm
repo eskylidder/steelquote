@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<!-- version 6.3 - 4/9/18 complete fabricated beams -->
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=800, initial-scale=1">
+	<title>Steel Quote | Take-Off Value Calculator for Steel Estimation</title>
+	<meta name="Author" content="M.McDonnell"/>
+	<meta name="description" content="Steel Quote is used to calculate weights and costs from a take-off for esimating project values aimed at the structural steel industry in Australia."/>
+	<meta name="keywords" content="takeoff, calculator, estimate, quote, steel, structural, engineering, domestic, fabrication, welding, australia"/>
+<style>
+
+
+body    {
+    font-family:"arial";
+    color:#000000;
+    text-align:left;
+    font-size:12px;
+    background-color:#D6E0F5;
+	margin-left:20%;
+    }
+h1  {
+	margin: 0;
+	font-family: "arial";
+	font-size: 40px;
+	text-align: center;
+	color: #000000;
+	border: 4px solid black;
+	border-radius: 13px;
+	background: #409ae9;
+	padding: 20px;
+	width: 250px;
+	height: 45px;
+    }
+
+h2  {
+	margin: 0;
+	font-family: "arial";
+	font-size: 15px;
+	text-align: center;
+	color: #ffffff;
+	border: 3px solid white;
+	border-radius: 0px;
+	background: #113657;
+	padding: 10px;
+	width: 500px;
+	height: 17px;
+    }
+p   {
+    font-family:"arial";
+    color:#000000;
+    text-align:left;
+    border-style: solid;
+	font-size:12px;
+    }
+div {
+    font-family:"arial";
+    color:#000000;
+    text-align:right;
+	font-size:12px;
+    }
+table {
+	border-collapse: collapse;
+	padding: 0px;
+	background-color: #eee;
+	font-size:12px;
+}
+table th	{
+	text-align:left;
+	background-color: #113657;
+	color: white;
+	font-size:12px;
+}
+table#nest td  {
+	border-collapse:collapse;
+	padding:0px;
+	font-size:12px;
+}
+table#nest tr:nth-child(even)   {
+	border:none;
+	background-color: #eee;
+	font-size:12px;
+}
+table#nest tr:nth-child(odd)    {
+	border:none;
+	background-color:#fff;
+	font-size:12px;
+}
+table#outs	{
+	border-collapse: collapse;
+	padding: 0px;
+	background-color: #eee;
+}
+table#info	{
+	width: 600px;
+	border: none;
+	border-collapse: collapse;
+	padding: 0px;
+	background: none;
+}
+</style>
+<script type="text/javascript">
+	
+//	if (screen.width <= 699) {
+//		document.location = "http://www.steelquote.info/mobile.htm";
+//	}
+    var categories = [];categories["startList"] = ["UC","UB","PFC","EA","UEA","FLAT","RND","SHS","RHS","CHS","SHEET","PURLIN","WC","WB","CUSTOM"];
+	categories["UC"] = ["UC-100","UC-150","UC-200","UC-250","UC-310"];
+	categories["UB"] = ["UB-150","UB-180","UB-200","UB-250","UB-310","UB-360","UB-410","UB-460","UB-530","UB-610"];
+	categories["PFC"] = ["PFC-75x40","PFC-100x50","PFC-125x65","PFC-150x75","PFC-180x75","PFC-200x75","PFC-230x75","PFC-250x90","PFC-300x90","PFC-380x100"];
+	categories["EA"] = ["EA-25x3","EA-25x5","EA-25x6","EA-30x3","EA-30x5","EA-30x6","EA-40x3","EA-40x5","EA-40x6","EA-45x3","EA-45x5","EA-45x6","EA-50x3","EA-50x5","EA-50x6","EA-50x8","EA-55x6","EA-55x8","EA-65x5","EA-65x6","EA-65x8","EA-65x10","EA-75x5","EA-75x6","EA-75x8","EA-75x10","EA-90x6","EA-90x8","EA-90x10","EA-100x6","EA-100x8","EA-100x10","EA-100x12","EA-125x8","EA-125x10","EA-125x12","EA-125x16","EA-150x10","EA-150x12","EA-150x16","EA-150x19","EA-200x13","EA-200x16","EA-200x18","EA-200x20","EA-200x26"];
+	categories["UEA"] = ["UEA-65x50x5","UEA-65x50x6","UEA-65x50x8","UEA-75x50x5","UEA-75x50x6","UEA-75x50x8","UEA-100x75x6","UEA-100x75x8","UEA-100x75x10","UEA-125x75x6","UEA-125x75x8","UEA-125x75x10","UEA-125x75x12","UEA-150x90x8","UEA-150x90x10","UEA-150x90x12","UEA-150x90x16","UEA-150x100x10","UEA-150x100x12"];
+	categories["FLAT"] = ["FL-300x25","FL-300x20","FL-300x16","FL-300x12","FL-300x10","FL-300x8","FL-300x6","FL-250x25","FL-250x20","FL-250x16","FL-250x12","FL-250x10","FL-250x8","FL-250x6","FL-200x25","FL-200x20","FL-200x16","FL-200x12","FL-200x10","FL-200x8","FL-200x6","FL-180x20","FL-180x12","FL-180x10","FL-180x6","FL-150x50","FL-150x25","FL-150x20","FL-150x16","FL-150x12","FL-150x10","FL-150x8","FL-150x6","FL-150x5","FL-130x25","FL-130x20","FL-130x16","FL-130x12","FL-130x10","FL-130x8","FL-130x6","FL-130x5","FL-110x12","FL-110x10","FL-110x8","FL-110x6","FL-100x50","FL-100x25","FL-100x20","FL-100x16","FL-100x12","FL-100x10","FL-100x8","FL-100x6","FL-100x5","FL-90x12","FL-90x10","FL-90x8","FL-90x6","FL-75x40","FL-75x25","FL-75x20","FL-75x16","FL-75x12","FL-75x10","FL-75x8","FL-75x6","FL-75x5","FL-65x20","FL-65x16","FL-65x12","FL-65x10","FL-65x8","FL-65x6","FL-65x5","FL-50x25","FL-50x20","FL-50x16","FL-50x12","FL-50x10","FL-50x8","FL-50x6","FL-50x5","FL-40x20","FL-40x16","FL-40x12","FL-40x10","FL-40x8","FL-40x6","FL-40x5","FL-32x12","FL-32x10","FL-32x8","FL-32x6","FL-32x5","FL-25x12","FL-25x10","FL-25x8","FL-25x6","FL-25x5","FL-25x3","FL-20x10","FL-20x6","FL-20x5","FL-20x3","FL-16x8"];
+	categories["RND"] = ["RND-10","RND-12","RND-13","RND-14","RND-15","RND-16","RND-17","RND-18","RND-19","RND-20","RND-21","RND-22","RND-24","RND-26","RND-27","RND-30","RND-32","RND-33","RND-36","RND-39","RND-42","RND-45","RND-48","RND-50","RND-56","RND-60","RND-65","RND-75","RND-80","RND-90","RND-100"];
+	categories["SHS"] = ["SHS-250x250x9.0","SHS-250x250x6.0","SHS-200x200x9.0","SHS-200x200x6.0","SHS-200x200x5.0","SHS-150x150x9.0","SHS-150x150x6.0","SHS-150x150x5.0","SHS-125x125x9.0","SHS-125x125x6.0","SHS-125x125x5.0","SHS-125x125x4.0","SHS-100x100x9.0","SHS-100x100x6.0","SHS-100x100x5.0","SHS-100x100x4.0","SHS-100x100x3.0","SHS-100x100x2.0","SHS-90x90x2.0","SHS-89x89x6.0","SHS-89x89x5.0","SHS-89x89x3.5","SHS-75x75x6.0","SHS-75x75x5.0","SHS-75x75x4.0","SHS-75x75x3.5","SHS-75x75x3.0","SHS-75x75x2.5","SHS-75x75x2.0","SHS-65x65x6.0","SHS-65x65x5.0","SHS-65x65x4.0","SHS-65x65x3.0","SHS-65x65x2.5","SHS-65x65x2.0","SHS-65x65x1.6","SHS-50x50x5.0","SHS-50x50x4.0","SHS-50x50x3.0","SHS-50x50x2.5","SHS-50x50x2.0","SHS-50x50x1.6","SHS-40x40x4.0","SHS-40x40x3.0","SHS-40x40x2.5","SHS-40x40x2.0","SHS-40x40x1.6","SHS-35x35x3.0","SHS-35x35x2.5","SHS-35x35x2.0","SHS-35x35x1.6","SHS-30x30x2.0","SHS-30x30x1.6","SHS-25x25x3.0","SHS-25x25x2.5","SHS-25x25x2.0","SHS-25x25x1.6","SHS-20x20x1.6"];
+	categories["RHS"] = ["RHS-250x150x9.0","RHS-250x150x6.0","RHS-250x150x5.0","RHS-200x100x9.0","RHS-200x100x6.0","RHS-200x100x5.0","RHS-200x100x4.0","RHS-200x100x3.0","RHS-150x100x9.0","RHS-150x100x6.0","RHS-150x100x5.0","RHS-150x100x4.0","RHS-150x50x6.0","RHS-150x50x5.0","RHS-150x50x4.0","RHS-150x50x3.0","RHS-150x50x2.5","RHS-150x50x2.0","RHS-125x75x6.0","RHS-125x75x5.0","RHS-125x75x4.0","RHS-125x75x3.0","RHS-125x75x2.5","RHS-125x75x2.0","RHS-102x76x6.0","RHS-102x76x5.0","RHS-102x76x3.5","RHS-100x50x6.0","RHS-100x50x5.0","RHS-100x50x4.0","RHS-100x50x3.5","RHS-100x50x3.0","RHS-100x50x2.5","RHS-100x50x2.0","RHS-100x50x1.6","RHS-75x50x6.0","RHS-75x50x5.0","RHS-75x50x4.0","RHS-75x50x3.0","RHS-75x50x2.5","RHS-75x50x2.0","RHS-75x50x1.6","RHS-75x25x2.5","RHS-65x35x3.0","RHS-65x35x2.5","RHS-65x35x2.0","RHS-50x25x3.0","RHS-50x25x2.5","RHS-50x25x2.0","RHS-50x25x1.6","RHS-50x20x3.0","RHS-50x20x2.5","RHS-50x20x2.0","RHS-50x20x1.6"];
+	categories["CHS"] = ["CHS-457.0x12.7","CHS-457.0x9.5","CHS-457.0x6.4","CHS-406.4x12.7","CHS-406.4x9.5","CHS-406.4x6.4","CHS-355.6x12.7","CHS-355.6x9.5","CHS-355.6x6.4","CHS-323.9x12.7","CHS-323.9x9.5","CHS-323.9x6.4","CHS-273.1x12.7","CHS-273.1x9.3","CHS-273.1x6.4","CHS-273.1x4.8","CHS-219.1x8.2","CHS-219.1x6.4","CHS-219.1x4.8","CHS-168.3x7.1","CHS-168.3x6.4","CHS-168.3x4.8","CHS-165.1x5.4","CHS-165.1x5.0","CHS-139.7x5.4","CHS-139.7x5.0","CHS-114.3x5.4","CHS-114.3x4.5","CHS-114.3x3.6","CHS-114.3x3.2","CHS-101.6x5.0","CHS-101.6x4.0","CHS-101.6x3.2","CHS-101.6x2.6","CHS-88.9x5.9","CHS-88.9x5.0","CHS-88.9x4.0","CHS-88.9x3.2","CHS-88.9x2.6","CHS-76.1x5.9","CHS-76.1x4.5","CHS-76.1x3.6","CHS-76.1x3.2","CHS-76.1x2.3","CHS-60.3x5.4","CHS-60.3x4.5","CHS-60.3x3.6","CHS-60.3x2.9","CHS-60.3x2.3","CHS-48.3x5.4","CHS-48.3x4.0","CHS-48.3x3.2","CHS-48.3x2.9","CHS-48.3x2.3","CHS-42.4x4.0","CHS-42.4x3.2","CHS-42.4x2.6","CHS-42.4x2.0","CHS-33.7x4.0","CHS-33.7x3.2","CHS-33.7x2.6","CHS-33.7x2.0","CHS-26.9x3.2","CHS-26.9x2.6","CHS-26.9x2.3","CHS-26.9x2.0"];
+	categories["SHEET"] = ["SHEET-3MM","SHEET-4MM","SHEET-5MM","SHEET-6MM","SHEET-8MM","SHEET-10MM","SHEET-12MM","SHEET-16MM","SHEET-20MM","SHEET-25MM","SHEET-28MM","SHEET-36MM","SHEET-40MM","SHEET-45MM","SHEET-50MM","SHEET-55MM","SHEET-60MM","SHEET-70MM","SHEET-80MM","SHEET-90MM","SHEET-100MM","SHEET-110MM","SHEET-120MM","SHEET-130MM","SHEET-140MM","SHEET-150MM"];
+	categories["PURLIN"] = ["C/Z-10012","C/Z-10015","C/Z-10019","C/Z-15012","C/Z-15015","C/Z-15019","C/Z-15024","C/Z-20012","C/Z-20015","C/Z-20019","C/Z-20024","C/Z-25015","C/Z-25019","C/Z-25024","C/Z-30019","C/Z-30024"];
+	categories["WC"] = ["WC-350","WC-400","WC-500"];
+	categories["WB"] = ["WB-700","WB-800","WB-900","WB-1000","WB-1200"];
+
+	categories["CUSTOM"] = ["HOT ROLLED","HOLLOW"];
+
+    categories["UC-100"] = ["14.8"];
+    categories["UC-150"] = ["23.4","30.0","37.2"];
+    categories["UC-200"] = ["46.2","52.2","59.5"];
+    categories["UC-250"] = ["72.9","89.5"];
+    categories["UC-310"] = ["96.8","118.0","137.0","158.0"];
+
+    categories["UB-150"] = ["14.8","18.0"];
+    categories["UB-180"] = ["16.1","18.1","22.2"];
+    categories["UB-200"] = ["18.2","22.3","25.4","29.8"];
+    categories["UB-250"] = ["25.7","31.4","37.3"];
+    categories["UB-310"] = ["32.0","40.4","46.2"];
+    categories["UB-360"] = ["44.7","50.7","56.7"];
+    categories["UB-410"] = ["53.7","59.7"];
+    categories["UB-460"] = ["67.1","74.6","82.1"];
+    categories["UB-530"] = ["82.8","92.4"];
+    categories["UB-610"] = ["101.0","113.0","125.0"];
+
+    categories["PFC-75x40"] = ["5.92"];
+    categories["PFC-100x50"] = ["8.33"];
+    categories["PFC-125x65"] = ["11.90"];
+    categories["PFC-150x75"] = ["17.70"];
+    categories["PFC-180x75"] = ["20.90"];
+    categories["PFC-200x75"] = ["22.90"];
+    categories["PFC-230x75"] = ["25.10"];
+    categories["PFC-250x90"] = ["35.50"];
+    categories["PFC-300x90"] = ["40.10"];
+    categories["PFC-380x100"] = ["55.20"];
+
+    categories["EA-25x3"] = ["1.12"];
+    categories["EA-25x5"] = ["1.65"];
+    categories["EA-25x6"] = ["2.08"];
+    categories["EA-30x3"] = ["1.35"];
+    categories["EA-30x5"] = ["2.01"];
+    categories["EA-30x6"] = ["2.56"];
+    categories["EA-40x3"] = ["1.83"];
+    categories["EA-40x5"] = ["2.73"];
+    categories["EA-40x6"] = ["3.50"];
+    categories["EA-45x3"] = ["2.06"];
+    categories["EA-45x5"] = ["3.10"];
+    categories["EA-45x6"] = ["3.97"];
+    categories["EA-50x3"] = ["2.31"];
+    categories["EA-50x5"] = ["3.48"];
+    categories["EA-50x6"] = ["4.46"];
+    categories["EA-50x8"] = ["5.68"];
+    categories["EA-55x5"] = ["3.84"];
+    categories["EA-55x6"] = ["4.93"];
+    categories["EA-65x5"] = ["4.56"];
+    categories["EA-65x6"] = ["5.87"];
+    categories["EA-65x8"] = ["7.51"];
+    categories["EA-65x10"] = ["9.02"];
+    categories["EA-75x5"] = ["5.27"];
+    categories["EA-75x6"] = ["6.81"];
+    categories["EA-75x8"] = ["8.73"];
+    categories["EA-75x10"] = ["10.5"];
+    categories["EA-90x6"] = ["8.22"];
+    categories["EA-90x8"] = ["10.6"];
+    categories["EA-90x10"] = ["12.7"];
+    categories["EA-100x6"] = ["9.16"];
+    categories["EA-100x8"] = ["11.8"];
+    categories["EA-100x10"] = ["14.2"];
+    categories["EA-100x12"] = ["17.7"];
+    categories["EA-125x8"] = ["14.9"];
+    categories["EA-125x10"] = ["18.0"];
+    categories["EA-125x12"] = ["22.5"];
+    categories["EA-125x16"] = ["29.1"];
+    categories["EA-150x10"] = ["21.9"];
+    categories["EA-150x12"] = ["27.3"];
+    categories["EA-150x16"] = ["35.4"];
+    categories["EA-150x19"] = ["42.1"];
+    categories["EA-200x13"] = ["40.0"];
+    categories["EA-200x16"] = ["48.7"];
+    categories["EA-200x18"] = ["54.4"];
+    categories["EA-200x20"] = ["60.6"];
+    categories["EA-200x26"] = ["76.8"];
+
+    categories["UEA-65x50x5"] = ["4.02"];
+    categories["UEA-65x50x6"] = ["5.16"];
+    categories["UEA-65x50x8"] = ["6.59"];
+    categories["UEA-75x50x5"] = ["4.40"];
+    categories["UEA-75x50x6"] = ["5.66"];
+    categories["UEA-75x50x8"] = ["7.23"];
+    categories["UEA-100x75x6"] = ["7.98"];
+    categories["UEA-100x75x8"] = ["10.3"];
+    categories["UEA-100x75x10"] = ["12.4"];
+    categories["UEA-125x75x6"] = ["9.16"];
+    categories["UEA-125x75x8"] = ["11.8"];
+    categories["UEA-125x75x10"] = ["14.2"];
+    categories["UEA-125x75x12"] = ["17.7"];
+    categories["UEA-150x90x8"] = ["14.3"];
+    categories["UEA-150x90x10"] = ["17.3"];
+    categories["UEA-150x90x12"] = ["21.6"];
+    categories["UEA-150x90x16"] = ["27.9"];
+    categories["UEA-150x100x10"] = ["18.0"];
+    categories["UEA-150x100x12"] = ["22.5"];
+
+	categories["FL-16x8"] = ["1.03"];
+	categories["FL-20x3"] = ["0.48"];
+	categories["FL-20x5"] = ["0.8"];
+	categories["FL-20x6"] = ["0.96"];
+	categories["FL-20x10"] = ["1.57"];
+    categories["FL-25x3"] = ["0.6"];
+    categories["FL-25x5"] = ["0.981"];
+    categories["FL-25x6"] = ["1.18"];
+    categories["FL-25x8"] = ["1.57"];
+    categories["FL-25x10"] = ["1.96"];
+    categories["FL-25x12"] = ["2.36"];
+    categories["FL-32x5"] = ["1.26"];
+    categories["FL-32x6"] = ["1.51"];
+    categories["FL-32x8"] = ["2.01"];
+    categories["FL-32x10"] = ["2.51"];
+    categories["FL-32x12"] = ["3.01"];
+    categories["FL-40x5"] = ["1.57"];
+    categories["FL-40x6"] = ["1.88"];
+    categories["FL-40x8"] = ["2.51"];
+    categories["FL-40x10"] = ["3.14"];
+    categories["FL-40x12"] = ["3.77"];
+    categories["FL-40x16"] = ["5.02"];
+    categories["FL-40x20"] = ["6.28"];
+    categories["FL-50x5"] = ["1.96"];
+    categories["FL-50x6"] = ["2.36"];
+    categories["FL-50x8"] = ["3.14"];
+    categories["FL-50x10"] = ["3.93"];
+    categories["FL-50x12"] = ["4.71"];
+    categories["FL-50x16"] = ["6.28"];
+    categories["FL-50x20"] = ["7.85"];
+    categories["FL-50x25"] = ["9.81"];
+    categories["FL-65x5"] = ["2.55"];
+    categories["FL-65x6"] = ["3.06"];
+    categories["FL-65x8"] = ["4.08"];
+    categories["FL-65x10"] = ["5.10"];
+    categories["FL-65x12"] = ["6.12"];
+    categories["FL-65x16"] = ["8.16"];
+    categories["FL-65x20"] = ["10.2"];
+    categories["FL-75x5"] = ["2.94"];
+    categories["FL-75x6"] = ["3.53"];
+    categories["FL-75x8"] = ["4.71"];
+    categories["FL-75x10"] = ["5.89"];
+    categories["FL-75x12"] = ["7.07"];
+    categories["FL-75x16"] = ["9.42"];
+    categories["FL-75x20"] = ["11.8"];
+    categories["FL-75x25"] = ["14.7"];
+    categories["FL-75x40"] = ["23.6"];
+    categories["FL-90x6"] = ["4.24"];
+    categories["FL-90x8"] = ["5.65"];
+    categories["FL-90x10"] = ["7.07"];
+    categories["FL-90x12"] = ["8.48"];
+    categories["FL-100x5"] = ["3.93"];
+    categories["FL-100x6"] = ["4.71"];
+    categories["FL-100x8"] = ["6.28"];
+    categories["FL-100x10"] = ["7.85"];
+    categories["FL-100x12"] = ["9.42"];
+    categories["FL-100x16"] = ["12.6"];
+    categories["FL-100x20"] = ["15.7"];
+    categories["FL-100x25"] = ["19.6"];
+    categories["FL-100x50"] = ["39.3"];
+    categories["FL-110x6"] = ["5.18"];
+    categories["FL-110x8"] = ["6.91"];
+    categories["FL-110x10"] = ["8.64"];
+    categories["FL-110x12"] = ["10.4"];
+    categories["FL-130x5"] = ["5.10"];
+    categories["FL-130x6"] = ["6.12"];
+    categories["FL-130x8"] = ["8.16"];
+    categories["FL-130x10"] = ["10.2"];
+    categories["FL-130x12"] = ["12.2"];
+    categories["FL-130x16"] = ["16.3"];
+    categories["FL-130x20"] = ["20.4"];
+    categories["FL-130x25"] = ["25.5"];
+    categories["FL-150x5"] = ["5.89"];
+    categories["FL-150x6"] = ["7.07"];
+    categories["FL-150x8"] = ["9.42"];
+    categories["FL-150x10"] = ["11.8"];
+    categories["FL-150x12"] = ["14.1"];
+    categories["FL-150x16"] = ["18.8"];
+    categories["FL-150x20"] = ["23.6"];
+    categories["FL-150x25"] = ["29.4"];
+    categories["FL-150x50"] = ["58.9"];
+    categories["FL-180x6"] = ["8.48"];
+    categories["FL-180x10"] = ["14.1"];
+    categories["FL-180x12"] = ["17.0"];
+    categories["FL-180x20"] = ["28.3"];
+    categories["FL-200x6"] = ["9.42"];
+    categories["FL-200x8"] = ["12.6"];
+    categories["FL-200x10"] = ["15.7"];
+    categories["FL-200x12"] = ["18.8"];
+    categories["FL-200x16"] = ["25.1"];
+    categories["FL-200x20"] = ["31.4"];
+    categories["FL-200x25"] = ["39.3"];
+    categories["FL-250x6"] = ["11.8"];
+    categories["FL-250x8"] = ["15.7"];
+    categories["FL-250x10"] = ["19.6"];
+    categories["FL-250x12"] = ["23.6"];
+	categories["FL-250x16"] = ["25.7"];
+	categories["FL-250x20"] = ["40.2"];
+	categories["FL-250x25"] = ["50.3"];
+    categories["FL-300x6"] = ["14.1"];
+    categories["FL-300x8"] = ["18.8"];
+    categories["FL-300x10"] = ["23.6"];
+    categories["FL-300x12"] = ["28.3"];
+	categories["FL-300x16"] = ["38.6"];
+	categories["FL-300x20"] = ["48.3"];
+	categories["FL-300x25"] = ["60.4"];
+
+    categories["RND-10"] = ["0.617"];
+    categories["RND-12"] = ["0.888"];
+    categories["RND-13"] = ["1.04"];
+    categories["RND-14"] = ["1.21"];
+    categories["RND-15"] = ["1.39"];
+    categories["RND-16"] = ["1.58"];
+    categories["RND-17"] = ["1.78"];
+    categories["RND-18"] = ["2.00"];
+    categories["RND-19"] = ["2.23"];
+    categories["RND-20"] = ["2.47"];
+    categories["RND-21"] = ["2.72"];
+    categories["RND-22"] = ["2.98"];
+    categories["RND-24"] = ["3.55"];
+    categories["RND-26"] = ["4.17"];
+    categories["RND-27"] = ["4.50"];
+    categories["RND-30"] = ["5.55"];
+    categories["RND-32"] = ["6.31"];
+    categories["RND-33"] = ["6.71"];
+    categories["RND-36"] = ["7.99"];
+    categories["RND-39"] = ["9.38"];
+    categories["RND-42"] = ["10.9"];
+    categories["RND-45"] = ["12.5"];
+    categories["RND-48"] = ["14.2"];
+    categories["RND-50"] = ["15.4"];
+    categories["RND-56"] = ["19.3"];
+    categories["RND-60"] = ["22.2"];
+    categories["RND-65"] = ["26.0"];
+    categories["RND-75"] = ["34.7"];
+    categories["RND-80"] = ["39.5"];
+    categories["RND-90"] = ["49.9"];
+    categories["RND-100"] = ["61.7"];
+
+    categories["SHS-250x250x9.0"] = ["65.9"];
+    categories["SHS-250x250x6.0"] = ["45"];
+    categories["SHS-200x200x9.0"] = ["51.8"];
+    categories["SHS-200x200x6.0"] = ["35.6"];
+    categories["SHS-200x200x5.0"] = ["29.9"];
+    categories["SHS-150x150x9.0"] = ["37.7"];
+    categories["SHS-150x150x6.0"] = ["26.2"];
+    categories["SHS-150x150x5.0"] = ["22.1"];
+    categories["SHS-125x125x9.0"] = ["30.6"];
+    categories["SHS-125x125x6.0"] = ["21.4"];
+    categories["SHS-125x125x5.0"] = ["18.2"];
+    categories["SHS-125x125x4.0"] = ["14.8"];
+    categories["SHS-100x100x9.0"] = ["23.5"];
+    categories["SHS-100x100x6.0"] = ["16.7"];
+    categories["SHS-100x100x5.0"] = ["14.2"];
+    categories["SHS-100x100x4.0"] = ["11.6"];
+    categories["SHS-100x100x3.0"] = ["8.96"];
+    categories["SHS-100x100x2.5"] = ["7.53"];
+    categories["SHS-100x100x2.0"] = ["6.07"];
+    categories["SHS-90x90x2.0"] = ["5.45"];
+    categories["SHS-89x89x6.0"] = ["14.6"];
+    categories["SHS-89x89x5.0"] = ["12.5"];
+    categories["SHS-89x89x3.5"] = ["9.06"];
+    categories["SHS-75x75x6.0"] = ["12"];
+    categories["SHS-75x75x5.0"] = ["10.3"];
+    categories["SHS-75x75x4.0"] = ["8.49"];
+    categories["SHS-75x75x3.5"] = ["7.53"];
+    categories["SHS-75x75x3.0"] = ["6.6"];
+    categories["SHS-75x75x2.5"] = ["5.56"];
+    categories["SHS-75x75x2.0"] = ["4.5"];
+    categories["SHS-65x65x6.0"] = ["10.1"];
+    categories["SHS-65x65x5.0"] = ["8.75"];
+    categories["SHS-65x65x4.0"] = ["7.23"];
+    categories["SHS-65x65x3.0"] = ["5.66"];
+    categories["SHS-65x65x2.5"] = ["4.78"];
+    categories["SHS-65x65x2.0"] = ["3.88"];
+    categories["SHS-65x65x1.6"] = ["3.13"];
+    categories["SHS-50x50x5.0"] = ["6.39"];
+    categories["SHS-50x50x4.0"] = ["5.35"];
+    categories["SHS-50x50x3.0"] = ["4.25"];
+    categories["SHS-50x50x2.5"] = ["3.6"];
+    categories["SHS-50x50x2.0"] = ["2.93"];
+    categories["SHS-50x50x1.6"] = ["2.38"];
+    categories["SHS-40x40x4.0"] = ["4.09"];
+    categories["SHS-40x40x3.0"] = ["3.3"];
+    categories["SHS-40x40x2.5"] = ["2.82"];
+    categories["SHS-40x40x2.0"] = ["2.31"];
+    categories["SHS-40x40x1.6"] = ["1.88"];
+    categories["SHS-35x35x3.0"] = ["2.83"];
+    categories["SHS-35x35x2.5"] = ["2.42"];
+    categories["SHS-35x35x2.0"] = ["1.99"];
+    categories["SHS-35x35x1.6"] = ["1.63"];
+    categories["SHS-30x30x2.0"] = ["1.68"];
+    categories["SHS-30x30x1.6"] = ["1.38"];
+    categories["SHS-25x25x3.0"] = ["1.89"];
+    categories["SHS-25x25x2.5"] = ["1.64"];
+    categories["SHS-25x25x2.0"] = ["1.36"];
+    categories["SHS-25x25x1.6"] = ["1.12"];
+    categories["SHS-20x20x1.6"] = ["0.873"];
+
+    categories["RHS-250x150x9.0"] = ["51.8"];
+    categories["RHS-250x150x6.0"] = ["35.6"];
+    categories["RHS-250x150x5.0"] = ["29.9"];
+    categories["RHS-200x100x9.0"] = ["37.7"];
+    categories["RHS-200x100x6.0"] = ["26.2"];
+    categories["RHS-200x100x5.0"] = ["22.1"];
+    categories["RHS-200x100x4.0"] = ["17.9"];
+    categories["RHS-200x100x3.0"] = ["13.7"];
+    categories["RHS-150x100x9.0"] = ["30.6"];
+    categories["RHS-150x100x6.0"] = ["21.4"];
+    categories["RHS-150x100x5.0"] = ["18.2"];
+    categories["RHS-150x100x4.0"] = ["14.8"];
+    categories["RHS-150x50x6.0"] = ["16.7"];
+    categories["RHS-150x50x5.0"] = ["14.2"];
+    categories["RHS-150x50x4.0"] = ["11.6"];
+    categories["RHS-150x50x3.0"] = ["8.96"];
+    categories["RHS-150x50x2.5"] = ["7.53"];
+    categories["RHS-150x50x2.0"] = ["6.07"];
+    categories["RHS-125x75x6.0"] = ["16.7"];
+    categories["RHS-125x75x5.0"] = ["14.2"];
+    categories["RHS-125x75x4.0"] = ["11.6"];
+    categories["RHS-125x75x3.0"] = ["8.96"];
+    categories["RHS-125x75x2.5"] = ["7.53"];
+    categories["RHS-125x75x2.0"] = ["6.07"];
+	categories["RHS-102x76x6.0"] = ["14.70"];
+	categories["RHS-102x76x5.0"] = ["12.50"];
+	categories["RHS-102x76x3.5"] = ["9.07"];
+    categories["RHS-100x50x6.0"] = ["12"];
+    categories["RHS-100x50x5.0"] = ["10.3"];
+    categories["RHS-100x50x4.0"] = ["8.49"];
+    categories["RHS-100x50x3.5"] = ["7.53"];
+    categories["RHS-100x50x3.0"] = ["6.6"];
+    categories["RHS-100x50x2.5"] = ["5.56"];
+    categories["RHS-100x50x2.0"] = ["4.5"];
+    categories["RHS-100x50x1.6"] = ["3.64"];
+    categories["RHS-75x50x6.0"] = ["9.67"];
+    categories["RHS-75x50x5.0"] = ["8.35"];
+    categories["RHS-75x50x4.0"] = ["6.92"];
+    categories["RHS-75x50x3.0"] = ["5.42"];
+    categories["RHS-75x50x2.5"] = ["4.58"];
+    categories["RHS-75x50x2.0"] = ["3.72"];
+    categories["RHS-75x50x1.6"] = ["3.01"];
+    categories["RHS-75x25x2.5"] = ["3.6"];
+    categories["RHS-65x35x3.0"] = ["4.25"];
+    categories["RHS-65x35x2.5"] = ["3.6"];
+    categories["RHS-65x35x2.0"] = ["2.93"];
+    categories["RHS-50x25x3.0"] = ["3.07"];
+    categories["RHS-50x25x2.5"] = ["2.62"];
+    categories["RHS-50x25x2.0"] = ["2.15"];
+    categories["RHS-50x25x1.6"] = ["1.75"];
+    categories["RHS-50x20x3.0"] = ["2.83"];
+    categories["RHS-50x20x2.5"] = ["2.42"];
+    categories["RHS-50x20x2.0"] = ["1.99"];
+    categories["RHS-50x20x1.6"] = ["1.63"];
+
+    categories["CHS-457.0x12.7"] = ["139"];
+    categories["CHS-457.0x9.5"] = ["105"];
+    categories["CHS-457.0x6.4"] = ["71.1"];
+    categories["CHS-406.4x12.7"] = ["123"];
+    categories["CHS-406.4x9.5"] = ["93"];
+    categories["CHS-406.4x 6.4"] = ["63.1"];
+    categories["CHS-355.6x12.7"] = ["107"];
+    categories["CHS-355.6x 9.5"] = ["81.1"];
+    categories["CHS-355.6x6.4"] = ["55.1"];
+    categories["CHS-323.9x12.7"] = ["97.5"];
+    categories["CHS-323.9x9.5"] = ["73.7"];
+    categories["CHS-323.9x6.4"] = ["50.1"];
+    categories["CHS-273.1x12.7"] = ["81.6"];
+    categories["CHS-273.1x9.3"] = ["60.5"];
+    categories["CHS-273.1x6.4"] = ["42.1"];
+    categories["CHS-273.1x4.8"] = ["31.8"];
+    categories["CHS-219.1x8.2"] = ["42.6"];
+    categories["CHS-219.1x6.4"] = ["33.6"];
+    categories["CHS-219.1x4.8"] = ["25.4"];
+    categories["CHS-168.3x7.1"] = ["28.2"];
+    categories["CHS-168.3x6.4"] = ["25.6"];
+    categories["CHS-168.3x4.8"] = ["19.4"];
+	categories["CHS-165.1x5.4"] = ["21.3"];
+    categories["CHS-165.1x5.0"] = ["19.7"];
+    categories["CHS-139.7x5.4"] = ["17.9"];
+    categories["CHS-139.7x5.0"] = ["16.6"];
+    categories["CHS-114.3x5.4"] = ["14.5"];
+    categories["CHS-114.3x4.5"] = ["12.2"];
+    categories["CHS-114.3x3.6"] = ["9.83"];
+    categories["CHS-114.3x3.2"] = ["8.77"];
+    categories["CHS-101.6x5.0"] = ["11.9"];
+    categories["CHS-101.6x4.0"] = ["9.63"];
+    categories["CHS-101.6x3.2"] = ["7.77"];
+    categories["CHS-101.6x2.6"] = ["6.35"];
+    categories["CHS-88.9x5.9"] = ["12.1"];
+    categories["CHS-88.9x5.0"] = ["10.3"];
+    categories["CHS-88.9x4.0"] = ["8.38"];
+    categories["CHS-88.9x3.2"] = ["6.76"];
+    categories["CHS-88.9x2.6"] = ["5.53"];
+    categories["CHS-76.1x5.9"] = ["10.2"];
+    categories["CHS-76.1x4.5"] = ["7.95"];
+    categories["CHS-76.1x3.6"] = ["6.44"];
+    categories["CHS-76.1x3.2"] = ["5.75"];
+    categories["CHS-76.1x2.3"] = ["4.19"];
+    categories["CHS-60.3x5.4"] = ["7.31"];
+    categories["CHS-60.3x4.5"] = ["6.19"];
+    categories["CHS-60.3x3.6"] = ["5.03"];
+    categories["CHS-60.3x2.9"] = ["4.11"];
+    categories["CHS-60.3x2.3"] = ["3.29"];
+    categories["CHS-48.3x5.4"] = ["5.71"];
+    categories["CHS-48.3x4.0"] = ["4.37"];
+    categories["CHS-48.3x3.2"] = ["3.56"];
+    categories["CHS-48.3x2.9"] = ["3.25"];
+    categories["CHS-48.3x2.3"] = ["2.61"];
+    categories["CHS-42.4x4.0"] = ["3.79"];
+    categories["CHS-42.4x3.2"] = ["3.09"];
+    categories["CHS-42.4x2.6"] = ["2.55"];
+    categories["CHS-42.4x2.0"] = ["1.99"];
+    categories["CHS-33.7x4.0"] = ["2.93"];
+    categories["CHS-33.7x3.2"] = ["2.41"];
+    categories["CHS-33.7x2.6"] = ["1.99"];
+    categories["CHS-33.7x2.0"] = ["1.56"];
+    categories["CHS-26.9x3.2"] = ["1.87"];
+    categories["CHS-26.9x2.6"] = ["1.56"];
+    categories["CHS-26.9x2.3"] = ["1.4"];
+    categories["CHS-26.9x2.0"] = ["1.23"];
+    
+    categories["SHEET-3MM"] = ["23.55"];
+	categories["SHEET-4MM"] = ["31.40"];
+	categories["SHEET-5MM"] = ["39.25"];
+	categories["SHEET-6MM"] = ["47.10"];
+	categories["SHEET-8MM"] = ["62.80"];
+	categories["SHEET-10MM"] = ["78.50"];
+	categories["SHEET-12MM"] = ["94.20"];
+	categories["SHEET-16MM"] = ["125.60"];
+	categories["SHEET-20MM"] = ["157.00"];
+	categories["SHEET-25MM"] = ["196.25"];
+	categories["SHEET-28MM"] = ["279.80"];
+	categories["SHEET-36MM"] = ["282.60"];
+	categories["SHEET-40MM"] = ["314.00"];
+	categories["SHEET-45MM"] = ["353.25"];
+	categories["SHEET-50MM"] = ["392.50"];
+	categories["SHEET-55MM"] = ["431.75"];
+	categories["SHEET-60MM"] = ["471.00"];
+	categories["SHEET-70MM"] = ["549.50"];
+	categories["SHEET-80MM"] = ["628.00"];
+	categories["SHEET-90MM"] = ["706.50"];
+	categories["SHEET-100MM"] = ["785.00"];
+	categories["SHEET-110MM"] = ["863.50"];
+	categories["SHEET-120MM"] = ["942.00"];
+	categories["SHEET-130MM"] = ["1021.00"];
+	categories["SHEET-140MM"] = ["1099.00"];
+	categories["SHEET-150MM"] = ["1177.50"];
+
+	categories["C/Z-10012"] = ["2.1"];
+	categories["C/Z-10015"] = ["2.62"];
+	categories["C/Z-10019"] = ["3.29"];
+	categories["C/Z-15012"] = ["2.89"];
+	categories["C/Z-15015"] = ["3.59"];
+	categories["C/Z-15019"] = ["4.51"];
+	categories["C/Z-15024"] = ["5.7"];
+	categories["C/Z-20012"] = ["3.62"];
+	categories["C/Z-20015"] = ["4.49"];
+	categories["C/Z-20019"] = ["5.74"];
+	categories["C/Z-20024"] = ["7.24"];
+	categories["C/Z-25015"] = ["5.16"];
+	categories["C/Z-25019"] = ["6.5"];
+	categories["C/Z-25024"] = ["8.16"];
+	categories["C/Z-30019"] = ["8.02"];
+	categories["C/Z-30024"] = ["10.19"];
+	
+	categories["WC-350"] = ["197","230","258","280"];
+	categories["WC-400"] = ["144","181","212","270","303","328","361"];
+	categories["WC-500"] = ["228","267","290","340","383","414","440"];
+			   
+	categories["WB-700"] = ["115","130","150","173"];
+	categories["WB-800"] = ["122","146","168","192"];
+	categories["WB-900"] = ["175","218","257","282"];
+	categories["WB-1000"] = ["215","258","296","322"];
+	categories["WB-1200"] = ["249","278","317","342","392","423","455"];
+
+	categories["HOT ROLLED"] = ["VALUE X"];
+	categories["HOLLOW"] = ["VALUE X"];
+
+
+
+var all = 0;
+var allandcleats = 0;
+var multi;
+var varIncWaste;
+var accuracy;
+var sheetName = "";
+
+var printAccuracyHRS;
+var printAccuracySHS;
+var printAccuracyPURLIN;
+var printAccuracyWCWB;
+
+var hrs = 0;
+var shs = 0;
+var purlin = 0;
+var wcwb = 0;
+var cleat = 0;
+var all = 0;
+
+var galv = 0;
+var pnt = 0;
+var coat = 0;
+
+var priceCleats = 0;
+var priceHrs = 0;
+var priceShs = 0;
+var pricePurlin = 0;
+var priceWcwb = 0;
+var priceGal = 0;
+var pricePaint = 0;
+var priceCoat = 0;
+var priceTally = 0;
+
+var totIncPurlin = 0;
+var boltVal = 0;
+var drawVal = 0;
+var fabHoursVal = 0;
+var fabDollarsVAL = 0;
+var marginVal = 0;
+var quickTotal = 0;
+var quickTotalOutput = 0;
+
+var printSchedule = "MEMBER SCHEDULE:";
+var printQuantities = "QUANTITIES:";
+var printOutput = "COSTS:";
+var printProject = "PROJECT COSTS";
+
+var nLists = 3; // number of lists in the set
+
+var arrayHrs = [];
+var arrayShs = [];
+var arrayPurlin = [];
+var arrayWcwb = [];
+
+var arrayMembers = [];
+var arrayQuantities = [];
+var arrayLengths = [];
+var arrayType = [];
+var arraySize = [];
+var arrayWeight = [];
+var arrayCoating = [];
+var arrayTotal = [];
+var arrayTotalIncludingWaste = [];
+
+var arrayGALV = [];
+var arrayPNT = [];
+var arrayPRINTACCURACYHRS = [];
+var arrayPRINTACCURACYSHS = [];
+var arrayPRINTACCURACYPURLIN = [];
+var arrayPRINTACCURACYWCWB = [];
+var arrayCLEAT = [];
+var arrayALLANDCLEATS = [];
+var arrayPRICEHRS = [];
+var arrayPRICESHS = [];
+var arrayPRICEPURLIN = [];
+var arrayPRICEWCWB = [];
+var arrayPRICECLEATS = [];
+var arrayPRICEGAL = [];
+var arrayPRICEPAINT = [];
+var arrayPRICECOAT  = [];
+var arrayPRICETALLY = [];
+
+var removeItemBoolean = false;
+
+var acc = 0;
+
+var separatorValue = "";
+
+function fillSelect(currCat,currList){
+
+	var step = Number(currList.name.replace(/\D/g,""));
+
+	for (i=step; i<nLists+1; i++) {
+		document.forms[0]['List'+i].length = 1;
+		document.forms[0]['List'+i].selectedIndex = 0;
+	}
+
+	var nCat = categories[currCat];
+
+	for (each in nCat) 	{
+		var nOption = document.createElement('option');
+		var nData = document.createTextNode(nCat[each]);
+		nOption.setAttribute('value',nCat[each]);
+		nOption.appendChild(nData);
+		currList.appendChild(nOption);
+	}
+			document.forms[0]['total'].value = "";
+			document.forms[0]['incwaste'].value = "";
+	if (document.forms[0]['List3'].length == 2 ) {
+	document.forms[0]['List3'].selectedIndex = 1;
+	getValue(document.forms[0]);
+	}
+}
+
+// verify input fields of takeoff item
+function getValue(form) {
+
+	sheetName = form.describe.value;
+
+    accuracy = parseFloat(form.quantity.value) * parseFloat(form.meters.value) * parseFloat(form.List3.value);
+	multi = accuracy;
+
+	if (form.List1.value == "PURLIN") {form.coating.value = "RAW";}
+
+	if (form.List1.value != "TYPE") {
+		if (form.List3.value == "VALUE X") {
+			accuracy = parseFloat(form.quantity.value) * parseFloat(form.meters.value) * parseFloat(form.customX.value);
+			multi = accuracy;
+		}
+		if (multi == "NaN") {
+			form.total.value = "";
+			form.incwaste.value = "";
+		}else{
+
+			varIncWaste = parseFloat((form.waste.value/100)*multi) + parseFloat(multi);
+			multi = "" + ((Math.round(multi * 100)) / 100);
+			varIncWaste = "" + ((Math.round(varIncWaste * 100)) / 100);
+
+			if (varIncWaste == "NaN") {
+				form.total.value = "";
+				form.incwaste.value = "";
+			}else{
+
+				form.total.value = multi;
+				form.incwaste.value = varIncWaste;
+			}
+		}
+	}
+}
+
+function inspectBox(form) {
+	if (form.total.value == "" && removeItemBoolean == 0) {
+		alert("Complete the item values");
+		return false;
+	}else{
+    if (form.coating.value == "COATING" && removeItemBoolean == 0) {
+		alert("Select a coating");
+		return false;
+    }
+		if (removeItemBoolean == false){//remove item switch START
+
+			if (form.List1.value == "PURLIN" && form.coating.value != "RAW") {alert("Coating should be set to RAW");}
+
+			if (form.List3.value == "VALUE X") {//start customX check
+				arraySize.push(form.customX.value);
+
+			}else{
+
+				arraySize.push(form.List3.value);
+
+			}//end customX check
+
+//Push elements of items to array
+			arrayMembers.push(form.member.value);
+			arrayQuantities.push(form.quantity.value);
+			arrayLengths.push(form.meters.value);
+			arrayType.push(form.List2.value);
+			arrayWeight.push(form.total.value);
+			arrayCoating.push(form.coating.value);
+			arrayTotal.push(form.total.value);
+			arrayTotalIncludingWaste.push(form.incwaste.value);
+//Push elements of items to array
+
+//check for custom material
+			if (form.List3.value == "VALUE X") {
+				acc = parseFloat(form.quantity.value) * parseFloat(form.meters.value) * parseFloat(form.customX.value);
+			}else{
+			acc = parseFloat(form.quantity.value) * parseFloat(form.meters.value) * parseFloat(form.List3.value);
+			}
+//check for custom material
+
+			switch (form.List1.value) {
+
+				case "UC":
+					hrs = parseFloat(acc) + parseFloat(hrs);
+					break;
+
+				case "UB":
+					hrs = parseFloat(acc) + parseFloat(hrs);
+					break;
+
+				case "PFC":
+					hrs = parseFloat(acc) + parseFloat(hrs);
+					break;
+
+				case "EA":
+					hrs = parseFloat(acc) + parseFloat(hrs);
+					break;
+
+				case "UEA":
+					hrs = parseFloat(acc) + parseFloat(hrs);
+					break;
+
+				case "FLAT":
+					hrs = parseFloat(acc) + parseFloat(hrs);
+					break;
+
+				case "RND":
+					hrs = parseFloat(acc) + parseFloat(hrs);
+					break;
+
+				case "SHS":
+					shs = parseFloat(acc) + parseFloat(shs);
+					break;
+
+				case "RHS":
+					shs = parseFloat(acc) + parseFloat(shs);
+					break;
+
+				case "CHS":
+					shs = parseFloat(acc) + parseFloat(shs);
+				break;
+                    
+                case "SHEET":
+                    hrs = parseFloat(acc) + parseFloat(hrs);
+                    break;
+
+				case "PURLIN":
+					purlin = parseFloat(acc) + parseFloat(purlin);
+				break;
+				
+				case "WC":
+					wcwb = parseFloat(acc) + parseFloat(wcwb);
+				break;
+				
+				case "WB":
+				wcwb = parseFloat(acc) + parseFloat(wcwb);
+				break;
+			}
+
+			switch (form.List2.value) {
+
+				case "HOT ROLLED":
+					hrs = parseFloat(acc) + parseFloat(hrs);
+					break;
+
+				case "HOLLOW":
+					shs = parseFloat(acc) + parseFloat(shs);
+				break;
+			}
+
+//quantities
+			arrayHrs.push(hrs);
+			arrayShs.push(shs);
+			arrayPurlin.push(purlin);
+			arrayWcwb.push(wcwb);
+		}//remove item switch END
+
+	//repair value after remove
+		hrs = arrayHrs.slice(-1);
+		if (hrs == ""){
+			hrs = 0;
+		}
+
+		shs = arrayShs.slice(-1);
+		if (shs == ""){
+			shs = 0;
+		}
+
+		purlin = arrayPurlin.slice(-1);
+		if (purlin == ""){
+			purlin = 0;
+		}
+		
+		wcwb = arrayWcwb.slice(-1);
+		if (wcwb == ""){
+			wcwb = 0;
+		}
+	//repair value after remove
+
+		if (removeItemBoolean == false) {//remove item switch START
+			printAccuracyHRS = parseFloat((form.waste.value/100)*arrayHrs.slice(-1)) + parseFloat(arrayHrs.slice(-1));
+			printAccuracySHS = parseFloat((form.waste.value/100)*arrayShs.slice(-1)) + parseFloat(arrayShs.slice(-1));
+			printAccuracyPURLIN = parseFloat(arrayPurlin.slice(-1));
+			printAccuracyWCWB = parseFloat((form.waste.value/100)*arrayWcwb.slice(-1)) + parseFloat(arrayWcwb.slice(-1));
+			all = parseFloat(printAccuracyHRS) + parseFloat(printAccuracySHS) + parseFloat(printAccuracyWCWB);
+			cleat = parseFloat((form.cleats.value/100)*all);
+			allandcleats = parseFloat(all + cleat);
+
+//quantities
+
+//coating
+			if (form.coating.value == "GAL") {
+				galv = parseFloat(varIncWaste) + parseFloat((form.cleats.value/100)*varIncWaste) + parseFloat(galv);
+			}
+
+			if (form.coating.value == "PAINT") {
+				pnt = parseFloat(varIncWaste) + parseFloat((form.cleats.value/100)*varIncWaste) + parseFloat(pnt);
+			}
+
+//coating
+
+//prices
+			priceHrs = parseFloat(printAccuracyHRS) * parseFloat(form.hrsppt.value/1000);
+			priceShs = parseFloat(printAccuracySHS) * parseFloat(form.shsppt.value/1000);
+			pricePurlin = parseFloat(printAccuracyPURLIN) * parseFloat(form.purlinppt.value/1000);
+			priceWcwb = parseFloat(printAccuracyWCWB) * parseFloat(form.wcwbppt.value/1000);
+			priceCleats = parseFloat(cleat) * parseFloat(form.hrsppt.value/1000);
+			priceGal = parseFloat(galv) * parseFloat(form.galppt.value/1000);
+			pricePaint = parseFloat(pnt) * parseFloat(form.paintppt.value/1000);
+			priceCoat = parseFloat(pricePaint) + parseFloat(priceGal);
+			priceTally = parseFloat(priceHrs) + parseFloat(priceShs) + parseFloat(priceCleats) + parseFloat(pricePurlin) + parseFloat(priceWcwb);
+//prices
+
+//Push new element to each array
+			arrayGALV.push(galv);
+			arrayPNT.push(pnt);
+			arrayPRINTACCURACYHRS.push(printAccuracyHRS);
+			arrayPRINTACCURACYSHS.push(printAccuracySHS);
+			arrayPRINTACCURACYPURLIN.push(printAccuracyPURLIN);
+			arrayPRINTACCURACYWCWB.push(printAccuracyWCWB);
+			arrayCLEAT.push(cleat);
+			arrayALLANDCLEATS.push(allandcleats);
+			arrayPRICEHRS.push(priceHrs);
+			arrayPRICESHS.push(priceShs);
+			arrayPRICEPURLIN.push(pricePurlin);
+			arrayPRICEWCWB.push(priceWcwb);
+			arrayPRICECLEATS.push(priceCleats);
+			arrayPRICEGAL.push(priceGal);
+			arrayPRICEPAINT.push(pricePaint);
+			arrayPRICECOAT.push(priceCoat);
+			arrayPRICETALLY.push(priceTally);
+//Push new element to each array
+
+		}//remove item switch END
+
+//after pop removal of last array element
+		galv = arrayGALV.slice(-1);
+		pnt = arrayPNT.slice(-1);
+		printAccuracyHRS = arrayPRINTACCURACYHRS.slice(-1);
+		printAccuracySHS = arrayPRINTACCURACYSHS.slice(-1);
+		printAccuracyPURLIN = arrayPRINTACCURACYPURLIN.slice(-1);
+		printAccuracyWCWB = arrayPRINTACCURACYWCWB.slice(-1);
+		cleat = arrayCLEAT.slice(-1);
+		allandcleats = arrayALLANDCLEATS.slice(-1);
+		priceHrs = arrayPRICEHRS.slice(-1);
+		priceShs = arrayPRICESHS.slice(-1);
+		pricePurlin = arrayPRICEPURLIN.slice(-1);
+		priceWcwb = arrayPRICEWCWB.slice(-1);
+		priceGal = arrayPRICEGAL.slice(-1);
+		pricePaint = arrayPRICEPAINT.slice(-1);
+		priceCoat = arrayPRICECOAT.slice(-1);
+		priceTally = arrayPRICETALLY.slice(-1);
+//after pop removal of last array element
+
+//rounding out floats
+		galv = "" + ((Math.round(galv * 100)) / 100);
+		pnt = "" + ((Math.round(pnt * 100)) / 100);
+		printAccuracyHRS = "" + ((Math.round(printAccuracyHRS * 100)) / 100);
+		printAccuracySHS = "" + ((Math.round(printAccuracySHS * 100)) / 100);
+		printAccuracyPURLIN = "" + ((Math.round(printAccuracyPURLIN * 100)) / 100);
+		printAccuracyWCWB = "" + ((Math.round(printAccuracyWCWB * 100)) / 100);
+		cleat = "" + ((Math.round(cleat * 100)) / 100);
+		allandcleats = "" + ((Math.round(allandcleats * 100)) / 100);
+		priceHrs = "" + ((Math.round(priceHrs * 100)) / 100).toFixed(2);
+		priceShs = "" + ((Math.round(priceShs * 100)) / 100).toFixed(2);
+		pricePurlin = "" + ((Math.round(pricePurlin * 100)) / 100).toFixed(2);
+		priceWcwb = "" + ((Math.round(priceWcwb * 100)) / 100).toFixed(2);
+		priceCleats = "" + ((Math.round(priceCleats * 100)) / 100).toFixed(2);
+		priceGal = "" + ((Math.round(priceGal * 100)) / 100).toFixed(2);
+		pricePaint = "" + ((Math.round(pricePaint * 100)) / 100).toFixed(2);
+		priceCoat = "" + ((Math.round(priceCoat * 100)) / 100).toFixed(2);
+		priceTally = "" + ((Math.round(priceTally * 100)) / 100).toFixed(2);
+//rounding out floats
+
+//create takeoff list
+		form.outTotal.value = "";
+		printSchedule = "";
+
+		for (var i=0;i<arrayMembers.length;i++){
+//print	to text area
+			form.outTotal.value += arrayMembers[i] + ", " + arrayQuantities[i] + " off, " + arrayLengths[i]  + "m, " + arrayType[i] + " @ " + arraySize[i] + "kg = " + arrayWeight[i] + "kg" + ", " + arrayCoating[i] + "\n";
+//print to export window
+			printSchedule += "<br>" + arrayMembers[i] + ", " + arrayQuantities[i] + " off, " + arrayLengths[i] + "m, " + arrayType[i] + " @ " + arraySize[i] + "kg = " + arrayWeight[i] + "kg" + "," + arrayCoating[i];
+        }
+//create takeoff list
+
+//last minute maths
+totIncPurlin = (parseFloat(printAccuracyPURLIN) + parseFloat(allandcleats)).toFixed(2);
+boltVal = ((Math.round(totIncPurlin * form.bolts.value)) / 1000).toFixed(2);
+drawVal = ((Math.round(totIncPurlin * form.drafting.value)) / 1000).toFixed(2);
+fabHoursVal = ((Math.round(allandcleats * form.fabHours.value)) / 1000).toFixed(2);
+fabDollarsVAL = ((Math.round((allandcleats * form.fabHours.value) * form.fabDollars.value)) / 1000).toFixed(2);
+
+quickTotal= (parseFloat(priceTally) + parseFloat(priceCoat) + parseFloat(boltVal) + parseFloat(drawVal) + parseFloat(fabDollarsVAL)).toFixed(2);
+marginVal = ((Math.round(quickTotal * form.marginInput.value)) / 100).toFixed(2);
+quickTotalOutput = (parseFloat(quickTotal) + parseFloat(marginVal)).toFixed(2);
+//last minute maths
+
+//create quantities list
+		form.takeOff.value = "HOT ROLLED SECTIONS = " + printAccuracyHRS + "kg" + "\n" + "HOLLOW SECTIONS = " + printAccuracySHS + "kg" + "\n" + "FABRICATED SECTIONS = " + printAccuracyWCWB + "kg" + "\n" + "CLEATS = " + cleat + "kg" + "\n" + "PURLINS = " + printAccuracyPURLIN + "kg" + "\n" + "-------------------------------" + "\n" + "ACCUMULATED WEIGHT = " + totIncPurlin + "kg" + "\n" + "-------------------------------" + "\n" + "PAINTED MATERIAL = " + pnt + "kg" + "\n" + "GALVANIZED MATERIAL = " + galv + "kg" + "\n" + "----------------------------" + "\n" + "FABRICATION HOURS: " + fabHoursVal + "\n" + "----------------------------"+ "\n" + "TOTAL WEIGHT = " + totIncPurlin + "kg";
+
+		printQuantities  = "<hr><B>" + "QUANTITIES:" + "</B><br><br>" + "HOT ROLLED SECTIONS = " + printAccuracyHRS + "kg" + "<br>" + "HOLLOW SECTIONS = " + printAccuracySHS + "kg" + "<br>" + "FABRICATED SECTIONS = " + printAccuracyWCWB + "kg"+ "<br>" + "CLEATS = " + cleat + "kg" + "<br>" + "PURLINS = " + printAccuracyPURLIN + "kg" + "<br>" +  "---------------------------------------------------" + "<br>" + "ACCUMULATED WEIGHT = " + totIncPurlin + "kg" + "<br>" + "---------------------------------------------------" + "<br>" + "PAINTED MATERIAL = " + pnt + "kg" + "<br>" + "GALVANIZED MATERIAL = " + galv + "kg" + "<br>" + "-----------------------------------------" + "<br>" + "FABRICATION HOURS: " + fabHoursVal + "<br>" + "---------------------------------------------------"  + "<br>" + "TOTAL WEIGHT = " + totIncPurlin + "kg";
+//create quantities list
+
+//create prices list
+		form.prices.value = "HOT ROLLED: $" + priceHrs + "\n" + "HOLLOW: $" + priceShs + "\n" + "FABRICATED: $" + priceWcwb + "\n" + "CLEATS: $" + priceCleats + "\n" + "PURLIN: $" + pricePurlin + "\n" + "-------------------------" + "\n" + "MATERIAL: $" + priceTally + "\n" + "-------------------------"+ "\n" +  "PAINTING: $" + pricePaint + "\n" + "GALVANIZING: $" + priceGal + "\n" + "-------------------------" + "\n" + "COATING: $" + priceCoat;
+
+		printOutput = "<hr><B>" + "COSTS:" + "</B><br><br>" + "HOT ROLLED: $" + priceHrs + "<br>" + "HOLLOW: $" + priceShs + "<br>" + "FABRICATED: $" + priceWcwb  + "<br>" + "CLEATS: $" + priceCleats + "<br>" + "PURLIN: $" + pricePurlin + "<br>" + "-------------------------------------" + "<br>" + "MATERIAL: $" + priceTally + "<br>" + "-------------------------------------" + "<br>" + "PAINTING: $" + pricePaint + "<br>" + "GALVANIZING: $" + priceGal + "<br>" + "-------------------------------------" + "<br>" + "COATING: $" + priceCoat;
+//create prices list
+
+//create project list
+        form.project.value = "BOLTS: $" + boltVal + "\n" + "----------------------------" + "\n" + "DRAFTING: $" + drawVal + "\n" + "----------------------------" + "\n" + "FABRICATION: $" + fabDollarsVAL + "\n" + "----------------------------" + "\n" + "SUBTOTAL: $" + quickTotal + "\n" + "MARGIN: $" + marginVal + "\n" + "----------------------------" + "\n" + "TOTAL: $" + quickTotalOutput;
+
+        printProject = "<hr><B>" + "PROJECT COSTS:" + "</B><br><br>" + "BOLTS: $" + boltVal + "<br>" + "-----------------------------------------" + "<br>" + "DRAFTING: $" + drawVal + "<br>" + "-----------------------------------------" + "<br>" + "FABRICATION: $" + fabDollarsVAL + "<br>" + "-----------------------------------------" + "<br>" + "SUBTOTAL: $" + quickTotal + "<br>" + "MARGIN: $" + marginVal + "<br>" + "-----------------------------------------" + "<br>" + "TOTAL: $" + quickTotalOutput;
+//create project list
+
+        form.outTotal.scrollTop = form.outTotal.scrollHeight; //scroll to last line
+
+		removeItemBoolean = false;//reset item remove switch to default
+
+		return false;//Stop form from reload on submit button press
+	}
+}
+
+function removeListItem (form) {
+
+	removeItemBoolean = true;
+
+	arrayHrs.pop();
+	arrayShs.pop();
+	arrayPurlin.pop();
+	arrayWcwb.pop();
+
+	arrayMembers.pop();
+	arrayQuantities.pop();
+	arrayLengths.pop();
+	arrayType.pop();
+	arraySize.pop();
+	arrayWeight.pop();
+	arrayCoating.pop();
+	arrayTotal.pop();
+	arrayTotalIncludingWaste.pop();
+
+	arrayGALV.pop();
+	arrayPNT.pop();
+	arrayPRINTACCURACYHRS.pop();
+	arrayPRINTACCURACYSHS.pop();
+	arrayPRINTACCURACYPURLIN.pop();
+	arrayPRINTACCURACYWCWB.pop();
+	arrayCLEAT.pop();
+	arrayALLANDCLEATS.pop();
+	arrayPRICEHRS.pop();
+	arrayPRICESHS.pop();
+	arrayPRICEPURLIN.pop();
+	arrayPRICEWCWB.pop();
+	arrayPRICECLEATS.pop();
+	arrayPRICEGAL.pop();
+	arrayPRICEPAINT.pop();
+	arrayPRICECOAT.pop();
+	arrayPRICETALLY.pop();
+
+	inspectBox(form);
+}
+
+function cleanMember (form) {
+
+    fillSelect('startList',document.forms[0]['List1']);
+    form.member.value = "";
+    form.meters.value = "";
+    form.total.value = "";
+	form.incwaste.value = "";
+    form.quantity.value = "1";
+	form.coating.value = "COATING";
+}
+
+function init() {
+    fillSelect('startList',document.forms[0]['List1']);
+}
+
+function createNewWindow (form) {//EXPORT TO PRINT
+
+	var newPage = "<html><head>"
+	newPage += "<style>body{font-family:'arial';color:#000000;text-align:left;font-size:14px;background-color:#ffffff;margin-left:20%;}</style>";
+	newPage += "<title>Export To Print</title></head><body>";
+	newPage += "<p><h3>PAGE DESCRIPTION:&nbsp;" + sheetName + "</h3><p>";
+	newPage += "<font face='arial' size='2'>" + printSchedule + "<br><br>" + printQuantities + "<br><br>" + printOutput  + "<br><br>" + printProject;
+	newPage += "<p></body></html>";
+	var j = window.open('about:blank')
+	j.document.write(newPage);
+	j.document.close();
+}
+
+function reloadPage(){
+
+    var x;
+    if (confirm("Are you sure you want to start a new page?\nAll input will be lost!") == true) {
+		location.reload()
+    } else {
+       //do nothing
+    }
+}
+
+function OnBeforeUnLoad () {
+    return "All data that you have entered will be lost!";
+}
+
+navigator.appName == "Microsoft Internet Explorer" ? attachEvent('onload', init, false) : addEventListener('load', init, false);
+
+</script>
+</head>
+
+<body onbeforeunload="return OnBeforeUnLoad ()">
+<form autocomplete="off">
+<br>
+<h1>Steel Quote</h1>
+<h2>Take-Off Entry and Value Calculator for Structural Steel Estimation</h2>
+<br>
+<table>
+	<tr>
+		<td><b>&nbsp;DESCRIPTION:</b></td>
+		<td><input name="describe" type="text" size="40" onchange="getValue(this.form)"></td>
+	</tr>
+</table>
+<br>
+<table>
+	<tr>
+		<td><b>&nbsp;ITEM:</b></td>
+		<td><input name="member" type="text" size="7"></td>
+		<td><b>&nbsp;QUANTITY:</b></td>
+		<td><input name="quantity" type="text" value="1" size="4" onchange="getValue(this.form)"></td>
+		<td><b>&nbsp;LENGTH:</b></td>
+		<td><input name="meters" type="text" size="5" onchange="getValue(this.form)"></td>
+		<td><select name='List1' onchange="fillSelect(this.value,this.form['List2'])">
+			<option selected>TYPE</option>
+			</select>
+		</td>
+		<td><select name='List2' onchange="fillSelect(this.value,this.form['List3'])">
+			<option selected>SIZE</option>
+			</select>
+		</td>
+		<td><select name='List3' onchange="getValue(this.form)">
+			<option selected>WEIGHT</option>
+			</select>
+		</td>
+		<td><select name='coating'>
+			<option value="COATING" selected>COATING</option>
+			<option value="PAINT">PAINT</option>
+			<option value="GAL">GAL</option>
+			<option value="RAW">RAW</option>
+			</select>
+		</td>
+	</tr>
+</table>
+<br>
+<table>
+	<tr>
+		<td>&nbsp;WEIGHT:</td>
+		<td><input name="total" type="text" size="10" readonly></td>
+		<td>&nbsp;WITH&nbsp;WASTE:</td>
+		<td><input name="incwaste" type="text" size="10" readonly></td>
+		<td><input type="submit"  value=" ADD " onClick="return inspectBox(this.form)" style="BACKGROUND-COLOR: #00CC00"></td>
+		<td><input type="button" value=" CLEAR " onClick="cleanMember(this.form)" style="BACKGROUND-COLOR: #FF0000"></td>
+		<td><input type="button" value=" REMOVE " onClick="removeListItem(this.form)" style="BACKGROUND-COLOR: #0059ff"></td>
+	</tr>
+</table>
+<br>
+<table id="nest">
+	<tr>
+       	<th><b>&nbsp;MEMBER SCHEDULE:</b></th>
+		<th colspan="3"><b>&nbsp;ITEM VARIABLES:</b></th>
+	</tr>
+	<tr>
+     	<td rowspan="16"><textarea name="outTotal" rows="25" cols="60" wrap="soft" readonly></textarea></td>
+	 	<td>
+            <tr>
+                <td><div>Waste&nbsp;%:&nbsp;</div></td>
+                <td><input name="waste" type="text" value="10" size="5" onchange="getValue(this.form)"></td>
+            </tr>
+            <tr>
+                <td><div>Allowance&nbsp;For&nbsp;Cleats&nbsp;%:&nbsp;</div></td>
+                <td><input name="cleats" type="text" value="10" size="5" onchange="getValue(this.form)"></td>
+            </tr>
+            <tr>
+                <td><div>Hot&nbsp;Rolled&nbsp;Sections&nbsp;Price&nbsp;Per&nbsp;Ton:&nbsp;</div></td>
+                <td><input name="hrsppt" type="text" value="1600" size="5" onchange="getValue(this.form)"></td>
+            </tr>
+            <tr>
+                <td><div>Hollow&nbsp;Sections&nbsp;Price&nbsp;Per&nbsp;Ton:&nbsp;</div></td>
+                <td><input name="shsppt" type="text" value="1800" size="5" onchange="getValue(this.form)"></td>
+            </tr>
+			<tr>
+				<td><div>Purlin&nbsp;Price&nbsp;Per&nbsp;Ton:&nbsp;</div></td>
+				<td><input name="purlinppt" type="text" value="2200" size="5" onchange="getValue(this.form)"></td>
+			</tr>
+			<tr>
+				<td><div>Fabricated&nbsp;Sections&nbsp;Price&nbsp;Per&nbsp;Ton:&nbsp;</div></td>
+				<td><input name="wcwbppt" type="text" value="2200" size="5" onchange="getValue(this.form)"></td>
+			</tr>
+            <tr>
+                <td><div>Galvanising&nbsp;Price&nbsp;Per&nbsp;Ton:&nbsp;</div></td>
+                <td><input name="galppt" type="text" value="1000" size="5" onchange="getValue(this.form)"></td>
+            </tr>
+            <tr>
+                <td><div>Painting&nbsp;Price&nbsp;Per&nbsp;Ton:&nbsp;</div></td>
+                <td><input name="paintppt" type="text" value="250" size="5" onchange="getValue(this.form)"></td>
+            </tr>
+            <tr>
+                <td><div>&nbsp;Custom&nbsp;Weight&nbsp;'VALUE X'&nbsp;Per&nbsp;Metre:&nbsp;</div></td>
+                <td><input name="customX" type="text" value="0" size="5" onchange="getValue(this.form)"></td>
+            </tr>
+			<tr>
+				<th colspan="2"><b>&nbsp;PROJECT VARIABLES:</b></th>
+			</tr>
+            <tr>
+                <td><div>Bolts&nbsp;Price&nbsp;Per&nbsp;Ton:&nbsp;</div></td>
+                <td><input name="bolts" type="text" value="100" size="5"></td>
+            </tr>
+            <tr>
+                <td><div>Drafting&nbsp;Price&nbsp;Per&nbsp;Ton:&nbsp;</div></td>
+                <td><input name="drafting" type="text" value="700" size="5"></td>
+            </tr>
+            <tr>
+                <td><div>Fabrication&nbsp;Hours&nbsp;Per&nbsp;Ton:&nbsp;</div></td>
+                <td><input name="fabHours" type="text" value="17" size="5"></td>
+            </tr>
+            <tr>
+                <td><div>Fabrication&nbsp;Price&nbsp;Per&nbsp;Hour:&nbsp;</div></td>
+                <td><input name="fabDollars" type="text" value="75" size="5"></td>
+            </tr>
+            <tr>
+                <td><div>Margin&nbsp;%:&nbsp;</div></td>
+                <td><input name="marginInput" type="text" value="10" size="5"></td>
+            </tr>
+		</td>
+   </tr>
+</table>
+<br>
+<table id="outs">
+	<tr>
+		<th><b>&nbsp;QUANTITIES:</b></th>
+        <th><b>&nbsp;COSTS:</b></th>
+        <th><b>&nbsp;PROJECT COSTS:</b></th>
+    </tr>
+    <tr>
+        <td><textarea name="takeOff" rows="15" cols="32" wrap="soft" readonly></textarea></td>
+        <td><textarea name="prices" rows="15" cols="25" wrap="soft" readonly></textarea></td>
+        <td><textarea name="project" rows="15" cols="28" wrap="soft" readonly></textarea></td>
+	</tr>
+</table>
+<br>
+<table>
+	<tr>
+		<td>
+			<input type="button" value=" EXPORT " onclick="createNewWindow();return true;" style="BACKGROUND-COLOR: #00cc00">
+		</td>
+		<td>
+			<input type="button" onClick="window.open('estimate.pdf')" style="BACKGROUND-COLOR: #0059ff" value=" ESTIMATE SHEET ">
+		</td>
+		<td>
+			<input type="button" value=" RESET ALL " onclick="reloadPage()" style="BACKGROUND-COLOR: #ff0000">
+		</td>
+	</tr>
+</table>
+</form>
+<br><br>
+<table id="info">
+	<tr>
+		<td>
+Steel Quote is used to calculate weights and costs from a take-off for esimating project values aimed at the structural steel industry in Australia.
+<br><br>
+The calculator should be used in conjunction with the estimate sheet provided to ensure all costs are included.
+<br><br>
+Prices reflect the domestic market in Australia for structural steel.
+<br><br>
+Whilst all care is taken that the script program works correctly, no responsibility will be taken for loss or damage as a result of using this web site.
+<br><br>
+Copyright &copy; 2012 Matt McDonnell.
+<br><br>
+		</td>
+	</tr>
+</table>
+<br><br>
+<a href="http://www.w3.org/html/logo/">
+<img src="http://www.w3.org/html/logo/badge/html5-badge-h-css3-device-performance.png" width="197" height="64" alt="HTML5 Powered with CSS3 / Styling, Device Access, and Performance &amp; Integration" title="HTML5 Powered with CSS3 / Styling, Device Access, and Performance &amp; Integration">
+</a>
+<br><br>
+<a href="http://jigsaw.w3.org/css-validator/check/referer">
+    <img style="border:0;width:88px;height:31px"
+        src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
+        alt="Valid CSS!" />
+</a>
+</body>
+</html>
